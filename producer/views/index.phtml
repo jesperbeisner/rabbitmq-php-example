@@ -1,0 +1,72 @@
+<?php
+
+declare(strict_types=1);
+
+use Jesperbeisner\Producer\BookingMessage;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
+use PhpAmqpLib\Message\AMQPMessage;
+
+$info = '';
+
+if (strtoupper($_SERVER['REQUEST_METHOD']) === 'POST') {
+    $firstName = $_POST['firstName'];
+    $lastName = $_POST['lastName'];
+    $date = new DateTimeImmutable($_POST['date']);
+
+    $message = new BookingMessage($firstName, $lastName, $date);
+
+    $connection = new AMQPStreamConnection('rabbitmq', 5672, 'guest', 'guest');
+    $channel = $connection->channel();
+
+    $channel->queue_declare('booking', false, false, false, false);
+
+    $amqpMessage = new AMQPMessage(json_encode($message, JSON_THROW_ON_ERROR));
+    $channel->basic_publish(msg: $amqpMessage, routing_key: 'booking');
+
+    $channel->close();
+    $connection->close();
+
+    $info = 'Reservation booked, yay! 🎉';
+}
+
+?>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link type="text/css" rel="stylesheet" href="/css/main.css">
+    <title>Booking manager</title>
+</head>
+<body>
+    <h1>
+        Booking manager
+    </h1>
+    <main>
+        <?php if ($info !== ''): ?>
+            <h2><?= $info ?></h2>
+        <?php endif; ?>
+
+        <form method="post">
+            <p>
+                <label for="firstName">First name</label>
+                <input type="text" id="firstName" name="firstName" required>
+            </p>
+
+            <p>
+                <label for="lastName">Last name</label>
+                <input type="text" id="lastName" name="lastName" required>
+            </p>
+
+            <p>
+                <label for="date">Date</label>
+                <input type="date" id="date" name="date" required>
+            </p>
+
+            <p>
+                <button type="submit">Submit</button>
+            </p>
+        </form>
+    </main>
+</body>
+</html>

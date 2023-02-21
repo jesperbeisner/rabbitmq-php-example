@@ -1,0 +1,25 @@
+{
+    "name": "jesperbeisner/consumer",
+    "description": "Queue consumer example",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jesper Beisner",
+            "email": "jesper.beisner+github@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "php-amqplib/php-amqplib": "^3.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Jesperbeisner\\Consumer\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

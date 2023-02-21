@@ -1,0 +1,7 @@
+producer/vendor/
+producer/composer.lock
+
+consumer/vendor/
+consumer/composer.lock
+consumer/var/*
+!consumer/var/.gitkeep

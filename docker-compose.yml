@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+    producer:
+        build:
+            dockerfile: ./producer/Dockerfile
+            context: .
+            args:
+                USER: ${USER}
+        container_name: producer
+        volumes:
+            - ./producer:/var/www/html
+        ports:
+            - "8080:80"
+
+    consumer:
+        build:
+            dockerfile: ./consumer/Dockerfile
+            context: .
+            args:
+                USER: ${USER}
+        command: "php /var/www/html/consumer.php"
+        container_name: consumer
+        volumes:
+            - ./consumer:/var/www/html
+
+    rabbitmq:
+        image: rabbitmq:3.11-management
+        container_name: rabbitmq
+        hostname: rabbitmq
+        ports:
+            - "15672:15672"
