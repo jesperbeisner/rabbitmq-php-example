@@ -3,6 +3,8 @@ FROM php:8.2.2-apache
 ARG USER=producer
 ARG UID=1000
 
+WORKDIR "/var/www/html"
+
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/

@@ -10,10 +10,17 @@ Just a small test setup to play around with RabbitMQ and PHP
 docker-compose up
 ```
 
-### 2. Visit http://localhost:8080 and create messages
+### 2. Install composer packages
 
-### 3. Check `consumer/var/messages.csv` for consumed messages
+```bash
+docker-compose exec consumer composer install
+docker-compose exec producer composer install
+```
 
-### 4. ?
+### 3. Visit http://localhost:8080 and create messages
 
-### 5. Profit!
+### 4. Check `consumer/var/messages.csv` for consumed messages
+
+### 5. ?
+
+### 6. Profit!
